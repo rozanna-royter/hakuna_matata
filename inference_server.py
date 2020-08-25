@@ -26,22 +26,23 @@ with open('temperature_lr.pickle', 'rb') as f:
 @app.route('/predict_7_days')
 def predict_7_days():
     own_temps = get_own()
-    print(own_temps)
+    # print(own_temps)
     wwo_temps, dates = get_wwo()
-    print(wwo_temps)
+    # print(wwo_temps)
     source_preds = []
     if len(own_temps) == NUM_OF_DAYS and len(wwo_temps) == NUM_OF_DAYS:
         for i in range(7):
             source_preds.append([round(own_temps[i], 2), float(wwo_temps[i])])
         # own_t = float(request.args.get('own_t'))
         # wwo_t = float(request.args.get('wwo_t'))
-        print(source_preds)
+        # print(source_preds)
         prediction = model.predict(source_preds)
         # prediction = model.predict([[19.93, 19.00], [20.09, 19.00], [19.3, 18.00], [15.06, 13.00], [16.78, 16.00], [19.31, 18.00], [14.73, 14.00]])
 
         date_predict = {}
         for i in range(len(dates)):
             date_predict[dates[i]] = prediction[i]
+        print('Response:', date_predict)
         return date_predict
     else:
         return 'Error: Incorrect length of arrays. Check the API'
@@ -53,7 +54,7 @@ def get_own():
     own_json = r.json()
     daily = own_json['daily'][1:]
     daily_temps = [x['temp']['day']-KELVIN_TO_C for x in daily]
-    print(f'OWN answer: {r.json()}')
+    # print(f'OWN answer: {r.json()}')
     return daily_temps
 
 
@@ -64,21 +65,11 @@ def get_wwo():
     daily = wwo_json['data']['weather'][1:]
     daily_temps = [x['hourly'][4]['tempC'] for x in daily]
     dates = [x['date'] for x in daily]
-    print(f'WWO answer: {r.json()}')
+    # print(f'WWO answer: {r.json()}')
     return daily_temps, dates
-#
-# @app.route('/predict', methods=["POST"])
-# def predict():
-#     req = request.get_json()
-#     df = pd.DataFrame.from_dict(req)
-#     prediction = model.predict(df)
-#
-#     return str(prediction)
 
 
 if __name__ == '__main__':
-    # app.run()
-
     port = os.environ.get('PORT')
 
     if port:
