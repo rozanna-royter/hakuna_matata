@@ -13,7 +13,7 @@ NUM_OF_DAYS = 7
 
 @app.route('/')
 def greetings():
-    return 'Welcome to housing prices predictor. Use API /predict_single and /predict'
+    return 'Welcome to Hakuna Matata weather predictor. Use API /predict_7_days'
 
 
 with open('temperature_lr.pickle', 'rb') as f:
