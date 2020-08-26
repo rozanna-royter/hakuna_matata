@@ -4,6 +4,9 @@ import requests
 import pandas as pd
 import pickle
 import os
+
+from sklearn.preprocessing import PolynomialFeatures
+
 app = Flask(__name__)
 
 
@@ -16,7 +19,7 @@ def greetings():
     return 'Welcome to Hakuna Matata weather predictor. Use API /predict_7_days'
 
 
-with open('temperature_lr.pickle', 'rb') as f:
+with open('weather_model.pickle', 'rb') as f:
     model = pickle.load(f)
 
 # http://localhost:5000/predict_single?MedInc=7.33&HouseAge=28&AveRooms=4.55&AveBedrms=2.41&Population=299&AveOccup=2.66&Latitude=37.81&Longitude=-122.28
@@ -36,7 +39,11 @@ def predict_7_days():
         # own_t = float(request.args.get('own_t'))
         # wwo_t = float(request.args.get('wwo_t'))
         # print(source_preds)
-        prediction = model.predict(source_preds)
+
+        poly_reg = PolynomialFeatures(degree=2)
+        X_poly = poly_reg.fit_transform(source_preds)
+
+        prediction = model.predict(X_poly)
         # prediction = model.predict([[19.93, 19.00], [20.09, 19.00], [19.3, 18.00], [15.06, 13.00], [16.78, 16.00], [19.31, 18.00], [14.73, 14.00]])
 
         date_predict = {}
