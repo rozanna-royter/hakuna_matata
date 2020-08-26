@@ -16,7 +16,7 @@ def greetings():
     return 'Welcome to Hakuna Matata weather predictor. Use API /predict_7_days'
 
 
-with open('temperature_lr.pickle', 'rb') as f:
+with open('weather_model.pickle', 'rb') as f:
     model = pickle.load(f)
 
 # http://localhost:5000/predict_single?MedInc=7.33&HouseAge=28&AveRooms=4.55&AveBedrms=2.41&Population=299&AveOccup=2.66&Latitude=37.81&Longitude=-122.28
