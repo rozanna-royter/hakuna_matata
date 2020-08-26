@@ -4,6 +4,7 @@ import requests
 import pandas as pd
 import pickle
 import os
+import json
 
 from sklearn.preprocessing import PolynomialFeatures
 
@@ -68,7 +69,12 @@ def get_own():
 def get_wwo():
     url = 'http://api.worldweatheronline.com/premium/v1/weather.ashx?key=2120c3bc36124169b2573330202508&q=London&format=json&num_of_days=8'
     r = requests.get(url)
-    wwo_json = r.json()
+    if r.status_code == 200:
+        wwo_json = r.json()
+    else:
+        with open('wwo_json') as json_file:
+            data = json.load(json_file)
+        wwo_json = data
     daily = wwo_json['data']['weather'][1:]
     daily_temps = [x['hourly'][4]['tempC'] for x in daily]
     dates = [x['date'] for x in daily]
