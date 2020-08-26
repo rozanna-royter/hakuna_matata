@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import request
+from flask_cors import CORS
 import requests
 import pandas as pd
 import pickle
@@ -9,7 +10,7 @@ import json
 from sklearn.preprocessing import PolynomialFeatures
 
 app = Flask(__name__)
-
+CORS(app)
 
 KELVIN_TO_C = 273.15
 NUM_OF_DAYS = 7

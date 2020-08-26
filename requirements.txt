@@ -2,3 +2,4 @@ Flask==1.1.2
 pandas==0.25.3
 requests==2.23.0
 scikit-learn==0.23.1
+Flask-Cors==3.0.8
